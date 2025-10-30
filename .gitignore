@@ -1,0 +1,7 @@
+__pycache__/
+.env
+.venv/
+*.pyc
+data/raw/email-Eu-core.txt
+data/raw/email-Eu-core.txt.gz
+/mnt/data/
