@@ -17,6 +17,31 @@ gunzip email-Eu-core.txt.gz
 mv email-Eu-core.txt email-Eu-core.txt
 ```
 
+```
+Invoke-WebRequest -Uri "https://snap.stanford.edu/data/email-Eu-core.txt.gz" -OutFile .\email-Eu-core.txt.gz
+```
+
+```
+$source = ".\email-Eu-core.txt.gz"
+$dest = ".\email-Eu-core.txt"
+
+$sourceStream = [System.IO.File]::OpenRead($source)
+$destStream = [System.IO.File]::Create($dest)
+$gzip = New-Object System.IO.Compression.GzipStream($sourceStream, [System.IO.Compression.CompressionMode]::Decompress)
+
+$buffer = New-Object byte[] 8192
+while (($read = $gzip.Read($buffer, 0, $buffer.Length)) -gt 0) {
+    $destStream.Write($buffer,0,$read)
+}
+
+$gzip.Close(); $destStream.Close(); $sourceStream.Close()
+Write-Host "Decompressed to $dest"
+
+```
+'''گ
+گ.
+گگ
+
 Alternatively run the Python helper in `src/ingest.py` (requires `requests` and internet access).
 
 **Quick start (local)**
