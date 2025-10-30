@@ -28,3 +28,50 @@ Alternatively run the Python helper in `src/ingest.py` (requires `requests` and 
 **Notes**
 - This archive includes only a small sample CSV so you can run the demo immediately.
 - The full dataset (~25K edges, ~1k nodes) is *not* included here due to size and licensing best-practices — use the downloader above to fetch it directly from SNAP.
+
+
+## Quick Virtualenv (venv) setup and editable install
+
+1. Create and activate a virtual environment (Linux/macOS):
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+python -m pip install -e .
+```
+
+Windows (PowerShell):
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+python -m pip install -e .
+```
+
+Run tests:
+```bash
+pytest
+```
+
+If you prefer not to install editable, you can run pytest with PYTHONPATH set:
+Linux/macOS:
+```bash
+PYTHONPATH=. pytest
+```
+Windows PowerShell:
+```powershell
+$env:PYTHONPATH = (Get-Location).Path
+pytest
+
+.\.venv\Scripts\activate.bat
+
+
+pytest
+
+streamlit run streamlit_app.py
+
+./run_pipeline.sh    # or : python scripts/run_features.py
+
+```
