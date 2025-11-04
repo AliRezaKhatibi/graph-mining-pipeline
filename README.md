@@ -38,9 +38,7 @@ $gzip.Close(); $destStream.Close(); $sourceStream.Close()
 Write-Host "Decompressed to $dest"
 
 ```
-'''گ
-گ.
-گگ
+'''
 
 Alternatively run the Python helper in `src/ingest.py` (requires `requests` and internet access).
 
