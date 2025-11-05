@@ -10,6 +10,7 @@ This repository contains a complete pipeline skeleton for graph mining built aro
 The full EU Email Core dataset is hosted by SNAP (Stanford Large Network Dataset Collection). To download the official dataset run:
 
 ```bash
+
 # from project root
 cd data/raw
 wget https://snap.stanford.edu/data/email-Eu-core.txt.gz
