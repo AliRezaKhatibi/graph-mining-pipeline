@@ -15,14 +15,13 @@ The full EU Email Core dataset is hosted by SNAP (Stanford Large Network Dataset
 cd data/raw
 wget https://snap.stanford.edu/data/email-Eu-core.txt.gz
 gunzip email-Eu-core.txt.gz
-mv email-Eu-core.txt email-Eu-core.txt
 ```
 
-```
+```powershell
 Invoke-WebRequest -Uri "https://snap.stanford.edu/data/email-Eu-core.txt.gz" -OutFile .\email-Eu-core.txt.gz
 ```
 
-```
+```powershell
 $source = ".\email-Eu-core.txt.gz"
 $dest = ".\email-Eu-core.txt"
 
@@ -39,7 +38,6 @@ $gzip.Close(); $destStream.Close(); $sourceStream.Close()
 Write-Host "Decompressed to $dest"
 
 ```
-'''
 
 Alternatively run the Python helper in `src/ingest.py` (requires `requests` and internet access).
 
@@ -63,9 +61,6 @@ source .venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
 python -m pip install -e .
-```
-```
-Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 ```
 
 Windows (PowerShell):
@@ -91,14 +86,11 @@ Windows PowerShell:
 ```powershell
 $env:PYTHONPATH = (Get-Location).Path
 pytest
-
-.\.venv\Scripts\activate.bat
-
-
-pytest
-
-streamlit run streamlit_app.py
-
-./run_pipeline.sh    # or : python scripts/run_features.py
-
 ```
+
+Run the demo from the activated environment:
+```bash
+streamlit run streamlit_app.py
+```
+
+On Linux/macOS, run `./run_pipeline.sh`; alternatively use `python scripts/run_features.py`.
