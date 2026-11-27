@@ -2,6 +2,35 @@
 
 This repository contains a complete pipeline skeleton for graph mining built around the SNAP `email-Eu-core` dataset.
 
+## Start here: explore a graph in minutes
+
+This Python project is intended for learners and researchers exploring graph mining, NetworkX and network visualization. You can try the included sample without downloading the full dataset.
+
+```bash
+git clone https://github.com/AliRezaKhatibi/graph-mining-pipeline.git
+cd graph-mining-pipeline
+python -m venv .venv
+```
+
+Activate the environment with `source .venv/bin/activate` on Linux/macOS or `.\\.venv\\Scripts\\Activate.ps1` in PowerShell, then run:
+
+```bash
+python -m pip install -r requirements.txt
+python -m streamlit run streamlit_app.py
+```
+
+The sample contains 10 nodes and 11 undirected edges (expected from the checked-in sample). The demo displays counts and a network visualization. To try your own graph, upload a headerless, comma-separated edge list such as:
+
+```csv
+0,1
+1,2
+2,0
+```
+
+The demo treats edges as undirected and removes self-loops. The official SNAP dataset is optional; its raw text format is whitespace-separated, so convert it to a headerless CSV before using the current CSV loader or demo. Keep the sample separate from the full dataset when reporting results.
+
+**Next steps:** run `python -m pytest -q` from the repository root, explore the `src/` utilities, or report a reproducible issue with the input format, Python version and traceback.
+
 **What you get**
 - project structure with `src/` utilities, tests, a Streamlit demo app, and a small *sample* of the dataset (data/raw/email-Eu-core-sample.csv).
 - a downloader script (`src/ingest.py::download_snap_email_eu_core`) and instructions below to fetch the *official* dataset from SNAP.
@@ -18,6 +47,8 @@ gunzip email-Eu-core.txt.gz
 ```
 
 ```powershell
+# from project root
+Set-Location data/raw
 Invoke-WebRequest -Uri "https://snap.stanford.edu/data/email-Eu-core.txt.gz" -OutFile .\email-Eu-core.txt.gz
 ```
 
