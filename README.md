@@ -1,96 +1,96 @@
 # Graph Mining Pipeline
 
-This repository contains a complete pipeline skeleton for graph mining built around the SNAP `email-Eu-core` dataset.
+Explore graph mining with Python, NetworkX and Streamlit using the Stanford SNAP email-Eu-core dataset. This repository provides a pipeline skeleton, graph-processing utilities, tests, a notebook example and an interactive local demo.
 
-**What you get**
-- project structure with `src/` utilities, tests, a Streamlit demo app, and a small *sample* of the dataset (data/raw/email-Eu-core-sample.csv).
-- a downloader script (`src/ingest.py::download_snap_email_eu_core`) and instructions below to fetch the *official* dataset from SNAP.
+## Try the demo
 
-**Important — dataset**
-The full EU Email Core dataset is hosted by SNAP (Stanford Large Network Dataset Collection). To download the official dataset run:
+The repository includes a small sample edge list, so you can explore the visualization without downloading the full research dataset. Run the commands from the repository root.
+
+### Linux / macOS
 
 ```bash
+git clone https://github.com/AliRezaKhatibi/graph-mining-pipeline.git
+cd graph-mining-pipeline
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python -m streamlit run streamlit_app.py
+```
 
-# from project root
+### Windows (PowerShell)
+
+```powershell
+git clone https://github.com/AliRezaKhatibi/graph-mining-pipeline.git
+cd graph-mining-pipeline
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --upgrade pip
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m streamlit run streamlit_app.py
+```
+
+Open the local URL printed by Streamlit. The demo displays node and edge counts and a Plotly network visualization. You can use the bundled sample or upload a headerless, comma-separated edge list with two columns, for example:
+
+```csv
+0,1
+1,2
+2,0
+```
+
+The visualization is exploratory; the bundled sample is not a substitute for the full dataset.
+
+## Project resources
+
+| Resource | Purpose |
+| --- | --- |
+| [Streamlit demo](streamlit_app.py) | Interactive graph exploration |
+| [Ingestion utilities](src/ingest.py) | Loading data and downloading the full dataset |
+| [Preprocessing](src/preprocess.py) | Graph construction and cleaning |
+| [Visualization](src/visualize.py) | Plotly graph visualization |
+| [Sample edge list](data/raw/email-Eu-core-sample.csv) | Small local example |
+| [Dependencies](requirements.txt) | Python libraries used by the project |
+
+## Full research dataset
+
+The full [email-Eu-core dataset](https://snap.stanford.edu/data/email-Eu-core.html) is hosted by Stanford's SNAP project. It contains approximately 1,000 nodes and 25,000 edges and is not included in this repository. Consult the original dataset page for its description, provenance and citation requirements.
+
+From the repository root, with the dependencies installed, use the included Python downloader:
+
+```bash
+python -c "from src.ingest import download_snap_email_eu_core; download_snap_email_eu_core()"
+```
+
+The helper downloads and extracts the official file into `data/raw/`. Internet access is required. The official text edge list is separate from the demo's headerless CSV input; do not assume the formats are interchangeable without conversion.
+
+Alternatively, on Linux/macOS:
+
+```bash
 cd data/raw
 wget https://snap.stanford.edu/data/email-Eu-core.txt.gz
 gunzip email-Eu-core.txt.gz
 ```
 
-```powershell
-Invoke-WebRequest -Uri "https://snap.stanford.edu/data/email-Eu-core.txt.gz" -OutFile .\email-Eu-core.txt.gz
-```
+On Windows, from the repository root:
 
 ```powershell
-$source = ".\email-Eu-core.txt.gz"
-$dest = ".\email-Eu-core.txt"
-
-$sourceStream = [System.IO.File]::OpenRead($source)
-$destStream = [System.IO.File]::Create($dest)
-$gzip = New-Object System.IO.Compression.GzipStream($sourceStream, [System.IO.Compression.CompressionMode]::Decompress)
-
-$buffer = New-Object byte[] 8192
-while (($read = $gzip.Read($buffer, 0, $buffer.Length)) -gt 0) {
-    $destStream.Write($buffer,0,$read)
-}
-
-$gzip.Close(); $destStream.Close(); $sourceStream.Close()
-Write-Host "Decompressed to $dest"
-
+Invoke-WebRequest -Uri "https://snap.stanford.edu/data/email-Eu-core.txt.gz" -OutFile "data/raw/email-Eu-core.txt.gz"
+python -c "import gzip, shutil; a=gzip.open('data/raw/email-Eu-core.txt.gz','rb'); b=open('data/raw/email-Eu-core.txt','wb'); shutil.copyfileobj(a,b); a.close(); b.close()"
 ```
 
-Alternatively run the Python helper in `src/ingest.py` (requires `requests` and internet access).
+## Development and experiments
 
-**Quick start (local)**
-1. create environment: `conda env create -f environment.yml` or `python -m venv .venv && pip install -r requirements.txt`
-2. install packages and run tests: `pytest -q`
-3. run Streamlit demo: `streamlit run streamlit_app.py`
-4. To run a notebook example: open `notebooks/analysis.ipynb` in Jupyter.
+Run the test suite from the repository root:
 
-**Notes**
-- This archive includes only a small sample CSV so you can run the demo immediately.
-- The full dataset (~25K edges, ~1k nodes) is *not* included here due to size and licensing best-practices — use the downloader above to fetch it directly from SNAP.
-
-
-## Quick Virtualenv (venv) setup and editable install
-
-1. Create and activate a virtual environment (Linux/macOS):
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install --upgrade pip
-pip install -r requirements.txt
-python -m pip install -e .
+python -m pytest -q
 ```
 
-Windows (PowerShell):
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-python -m pip install -e .
-```
+For notebook exploration, open `notebooks/analysis.ipynb` using a Jupyter environment. Install Jupyter separately if needed. On Linux/macOS, the documented pipeline entry point is `./run_pipeline.sh`; the feature script can also be invoked with `python scripts/run_features.py`.
 
-Run tests:
-```bash
-pytest
-```
+Dependency versions are not pinned in `requirements.txt`. For reproducible research, record the Python version, installed package versions, dataset source, preprocessing settings and random seeds alongside your results.
 
-If you prefer not to install editable, you can run pytest with PYTHONPATH set:
-Linux/macOS:
-```bash
-PYTHONPATH=. pytest
-```
-Windows PowerShell:
-```powershell
-$env:PYTHONPATH = (Get-Location).Path
-pytest
-```
+## Contributing
 
-Run the demo from the activated environment:
-```bash
-streamlit run streamlit_app.py
-```
+Feedback on graph algorithms, reproducibility, dataset handling and documentation is welcome. For a useful bug report, include your OS, Python version, the command you ran, a minimal non-sensitive edge list and the traceback. For research comparisons, describe preprocessing and evaluation settings.
 
-On Linux/macOS, run `./run_pipeline.sh`; alternatively use `python scripts/run_features.py`.
+If this repository is useful in your work, consider starring it or following the [author](https://github.com/AliRezaKhatibi) for related mathematical machine learning projects.
